@@ -2,6 +2,8 @@ from fastapi import FastAPI
 import torch
 from pydantic import BaseModel
 import numpy as np
+from typing import List
+import os
 
 # Define a Pydantic model for the input data
 class InputData(BaseModel):
@@ -9,8 +11,12 @@ class InputData(BaseModel):
 
 app = FastAPI()
 
+MLP_PATH = os.path.join('models', 'baseline_mlp.pth')
+XGBR_PATH = os.path.join('models', 'baseline_xgbr.pkl')
+
+MINMAX_SCALER_PATH = os.path.join('scalers', 'scaler_minmax.pkl')
 # Load the model
-model = torch.load("model.pth")
+model = torch.load(MLP_PATH)
 
 @app.post("/predict")
 async def predict(input_data: InputData):
